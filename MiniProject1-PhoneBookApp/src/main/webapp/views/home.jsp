@@ -81,7 +81,8 @@
 				</tr>
 				<tr>
 					<td>CONTACT EMAIL</td>
-					<td><form:input path="contactEmail" required="required" /></td>
+					<td><form:input type="email" path="contactEmail"
+							required="required" /></td>
 				</tr>
 				<tr>
 					<td>CONTACT NUMBER &nbsp;</td>
