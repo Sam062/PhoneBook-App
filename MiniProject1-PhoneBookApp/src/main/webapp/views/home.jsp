@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="css/style.css" />
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
@@ -14,9 +15,16 @@
 	crossorigin="anonymous">
 
 <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+	
+</script>
+
+<script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<title>Phone Book Application</title>
+
 <script>
 	$(function() {
 		// Initialize form validation on the registration form.
@@ -28,7 +36,6 @@
 				// of an input field. Validation rules are defined
 				// on the right side
 				contactName : "required",
-
 				contactEmail : {
 					required : true,
 					// Specify that email should be validated
@@ -42,13 +49,12 @@
 			},
 			// Specify validation error messages
 			messages : {
-				contactName : "Please enter your name",
-
+				contactName : " Please enter your name",
 				contactNumber : {
-					required : "Please provide phone no",
-					minlength : "Your phno must be at least 10 characters long"
+					required : " Please provide phone no",
+					minlength : "Number should be 10 digits"
 				},
-				contactEmail : "Please enter a valid email address"
+				contactEmail : " Provide valid email address"
 			},
 			// Make sure the form is submitted to the destination defined
 			// in the "action" attribute of the form when valid
@@ -58,7 +64,41 @@
 		});
 	});
 </script>
-<title>Phone Book App</title>
+
+<script>
+	$(document).ready(function(e) {
+		$("#contactEmail").blur(function(event) {
+			$("#dupEmail").html("");
+			var emailId = $("#contactEmail").val();
+			$.ajax({
+				url : 'validateEmail?email=' + emailId,
+				success : function(response) {
+					if (response == 'duplicate') {
+						$("#dupEmail").html("Email already Exist");
+						$("#contactEmail").focus();
+					}
+				}
+			});
+		});
+	});
+</script>
+<script>
+	$(document).ready(function(e) {
+		$("#contactNumber").blur(function(event) {
+			$("#dupContact").html("");
+			var number = $("#contactNumber").val();
+			$.ajax({
+				url : 'validateContact?number=' + number,
+				success : function(response) {
+					if (response == 'duplicate') {
+						$("#dupContact").html("Contact Number already Exist");
+						$("#contactNumber").focus();
+					}
+				}
+			});
+		});
+	});
+</script>
 </head>
 
 <body>
@@ -69,7 +109,7 @@
 			<table class="table-hover">
 				<tr>
 					<td colspan="2" class="success">
-						<h3 class="text text-warning" align="center">CONTACT DETAILS</h3>
+						<h3 class="text text-info" align="center">CONTACT DETAILS</h3>
 					</td>
 				</tr>
 				<tr>
@@ -77,20 +117,26 @@
 				</tr>
 				<tr>
 					<td>CONTACT NAME</td>
-					<td><form:input path="contactName" required="required" /></td>
+					<td><form:input path="contactName" required="required"
+							placeholder="INPUT NAME" /></td>
 				</tr>
 				<tr>
 					<td>CONTACT EMAIL</td>
 					<td><form:input type="email" path="contactEmail"
-							required="required" /></td>
+							required="required" placeholder="INPUT EMAIL" /> <font
+						color='red'>
+							<div id="dupEmail"></div>
+					</font></td>
 				</tr>
 				<tr>
 					<td>CONTACT NUMBER &nbsp;</td>
-					<td><form:input path="contactNumber" required="required" /></td>
+					<td><form:input path="contactNumber" required="required"
+							placeholder="INPUT NUMBER" /> <font color='red'>
+							<div id="dupContact"></div>
+					</font></td>
 				</tr>
-
 				<tr>
-					<td align="right"><input type="submit" class="btn btn-primary"
+					<td align="right"><input type="submit" class="btn btn-success"
 						value="SAVE" /></td>
 					<td align="center"><input type="reset" class="btn btn-danger"
 						value="RESET" /></td>

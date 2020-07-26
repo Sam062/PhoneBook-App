@@ -8,7 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import base.model.ContactModel;
@@ -19,6 +21,16 @@ public class ContactInfoController {
 
 	@Autowired
 	private IContactService service;
+
+
+	@GetMapping("/validateEmail")
+	public @ResponseBody String emailValidater(@RequestParam("email")String email) {
+		return service.findByContactEmail(email);
+	}
+	@GetMapping("/validateContact")
+	public @ResponseBody String contactValidater(@RequestParam("number")Long number) {
+		return service.findByContactNumber(number);
+	}
 
 	@GetMapping({"/","/home"})
 	public String loadHomePage(Model model) {
@@ -64,6 +76,8 @@ public class ContactInfoController {
 	@GetMapping("/edit")
 	public String showEditPage(@RequestParam("id")Integer id,Model model) {
 		ContactModel contact=service.getContactByID(id);
+		contact.setContactEmail("");
+		contact.setContactNumber(null);
 		model.addAttribute("Model", contact);
 		return "home";
 	}

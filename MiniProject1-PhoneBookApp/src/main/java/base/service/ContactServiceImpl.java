@@ -20,6 +20,29 @@ public class ContactServiceImpl implements IContactService {
 	private ContactRepository repo;
 
 	@Override
+	public String findByContactEmail(String email) {
+		List<ContactDetailsEntity> entity=repo.findByContactEmail(email);
+		try {
+			if(entity.isEmpty() || entity.size()<1)
+				return "unique";	
+			return "duplicate";
+		} catch (Exception e) {
+			return "duplicate";
+		}
+	}
+	@Override
+	public String findByContactNumber(Long number) {
+		List<ContactDetailsEntity> entity=repo.findByContactNumber(number);
+		try {
+			if(entity.isEmpty() || entity.size()<1)
+				return "unique";	
+			return "duplicate";
+		} catch (Exception e) {
+			return "duplicate";
+		}
+	}
+
+	@Override
 	public Boolean saveContact(ContactModel model) {
 		boolean isSaved=false;
 		try {

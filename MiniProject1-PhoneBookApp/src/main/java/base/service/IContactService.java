@@ -9,4 +9,7 @@ public interface IContactService {
 	public List<ContactModel> getAllContacts();
 	public ContactModel getContactByID(Integer contactID);
 	public Boolean deleteContact(Integer contactID);
+	
+	String findByContactEmail(String email);
+	String findByContactNumber(Long number);
 }
